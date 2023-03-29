@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cc.faytmx.springboot.app.inventory.model.Category;
 import cc.faytmx.springboot.app.inventory.response.CategoryResponseRest;
 import cc.faytmx.springboot.app.inventory.services.ICategoryService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -19,21 +20,51 @@ public class CategoryRestController {
     @Autowired
     private ICategoryService categoryService;
 
+    /**
+     * Search all categories
+     * 
+     * @return
+     */
     @GetMapping("/categories")
     public ResponseEntity<CategoryResponseRest> searchCategories() {
         ResponseEntity<CategoryResponseRest> response = categoryService.search();
         return response;
     }
 
+    /**
+     * Search category by id
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/categories/{id}")
     public ResponseEntity<CategoryResponseRest> searchCategoryById(@PathVariable Long id) {
         ResponseEntity<CategoryResponseRest> response = categoryService.searchById(id);
         return response;
     }
 
+    /**
+     * Save category
+     * 
+     * @param category
+     * @return
+     */
     @PostMapping("/categories")
     public ResponseEntity<CategoryResponseRest> saveCategory(@RequestBody Category category) {
         ResponseEntity<CategoryResponseRest> response = categoryService.save(category);
+        return response;
+    }
+
+    /**
+     * Update category by id
+     * 
+     * @param category
+     * @param id
+     * @return
+     */
+    @PutMapping("/categories/{id}")
+    public ResponseEntity<CategoryResponseRest> updateCategory(@RequestBody Category category, @PathVariable Long id) {
+        ResponseEntity<CategoryResponseRest> response = categoryService.update(category, id);
         return response;
     }
 }
