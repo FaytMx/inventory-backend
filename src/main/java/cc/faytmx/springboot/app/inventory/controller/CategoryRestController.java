@@ -2,6 +2,7 @@ package cc.faytmx.springboot.app.inventory.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import cc.faytmx.springboot.app.inventory.response.CategoryResponseRest;
 import cc.faytmx.springboot.app.inventory.services.ICategoryService;
 import org.springframework.web.bind.annotation.PutMapping;
 
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1")
 public class CategoryRestController {
@@ -71,6 +73,7 @@ public class CategoryRestController {
 
     /**
      * Delete category by id
+     * 
      * @param id
      * @return
      */
