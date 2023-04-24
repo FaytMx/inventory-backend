@@ -201,7 +201,7 @@ public class ProductServiceImpl implements IProductService {
 
                 Product productToUpdate = productDao.save(productSearch.get());
 
-                if (productToUpdate == null) {
+                if (productToUpdate != null) {
                     products.add(productToUpdate);
                     response.getProduct().setProducts(products);
                     response.setMetadata("respuesta ok", "0", "Producto actualizado");
