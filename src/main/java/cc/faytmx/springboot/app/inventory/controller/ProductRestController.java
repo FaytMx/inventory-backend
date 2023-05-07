@@ -2,6 +2,8 @@ package cc.faytmx.springboot.app.inventory.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import cc.faytmx.springboot.app.inventory.model.Product;
 import cc.faytmx.springboot.app.inventory.response.ProductResponseRest;
 import cc.faytmx.springboot.app.inventory.services.IProductService;
+import cc.faytmx.springboot.app.inventory.util.ProductExcelExporter;
 import cc.faytmx.springboot.app.inventory.util.Util;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
@@ -77,6 +80,7 @@ public class ProductRestController {
 
     /**
      * update
+     * 
      * @param picture
      * @param name
      * @param price
@@ -100,5 +104,26 @@ public class ProductRestController {
         ResponseEntity<ProductResponseRest> response = productService.update(product, categoryId, id);
 
         return response;
+    }
+
+    /**
+     * export to excel
+     * 
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("/products/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=categorias.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        ResponseEntity<ProductResponseRest> productResponse = productService.search();
+
+        ProductExcelExporter excelExporter = new ProductExcelExporter(
+                productResponse.getBody().getProduct().getProducts());
+
+        excelExporter.export(response);
     }
 }
